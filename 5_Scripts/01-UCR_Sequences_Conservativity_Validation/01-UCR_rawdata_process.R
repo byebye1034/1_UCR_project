@@ -1,4 +1,4 @@
-# UCRÔ­Ê¼Êı¾İ(hg16)ÏÂÔØ£¬×ª»»³ÉGRCh38×ø±ê£¬×¼±¸getfastaĞèÒªµÄbedÎÄ¼ş
+# UCRåŸå§‹æ•°æ®(hg16)ä¸‹è½½ï¼Œè½¬æ¢æˆGRCh38åæ ‡ï¼Œå‡†å¤‡getfastaéœ€è¦çš„bedæ–‡ä»¶
 
 setwd("D:/R_project/UCR_project")
 options(stringsAsFactors = FALSE)
@@ -7,12 +7,12 @@ rm(list = ls())
 library(tidyverse)
 library(stringr)
 
-# µ¼Èë´ÓÍøÕ¾ÏÂÔØµÄUCRÔ­Ê¼Êı¾İ£¬×ª»»³É·½±ãÊ¹ÓÃµÄ¸ñÊ½ ----------------------------------------------
+# å¯¼å…¥ä»ç½‘ç«™ä¸‹è½½çš„UCRåŸå§‹æ•°æ®ï¼Œè½¬æ¢æˆæ–¹ä¾¿ä½¿ç”¨çš„æ ¼å¼ ----------------------------------------------
 
-# µ¼Èë´ÓÍøÕ¾ÏÂÔØµÄUCRÔ­Ê¼Êı¾İ
-UCR_rawdata <- read.table(file = "D:/A_projects/UCR/UCRÏÂÔØÊı¾İ/UCRÔ­Ê¼Êı¾İ.csv", skip = 2, sep = ",")
+# å¯¼å…¥ä»ç½‘ç«™ä¸‹è½½çš„UCRåŸå§‹æ•°æ®
+UCR_rawdata <- read.table(file = "D:/A_projects/UCR/UCRä¸‹è½½æ•°æ®/UCRåŸå§‹æ•°æ®.csv", skip = 2, sep = ",")
 
-# ¶¨ÒåÁĞÃû
+# å®šä¹‰åˆ—å
 colnames(UCR_rawdata) <- c("name", "type", "length", "location(hg16)", 
                            "upstream gene distance", "upstream gene name", 
                            "within gene name", 
@@ -22,26 +22,26 @@ colnames(UCR_rawdata) <- c("name", "type", "length", "location(hg16)",
                            "UTR", "CDS", "intron", "10k upstream", "10k downstream", "intergenic", 
                            "RNAfold p-value", "chicken overlap", "chicken identical", 
                            "fugu overlap", "fugu identical")
-# ±£´æÎªRdata
+# ä¿å­˜ä¸ºRdata
 save(UCR_rawdata, file = "D:/R_project/UCR_project/01-data/UCR_raw/UCR.Rdata")
 load(file = "D:/R_project/UCR_project/01-data/UCR_raw/UCR.Rdata")
 
-# 20230925 ×¼±¸ÓÃÓÚ×ø±ê×ª»»µÄbedÎÄ¼ş ----------------------------------------------------------
+# 20230925 å‡†å¤‡ç”¨äºåæ ‡è½¬æ¢çš„bedæ–‡ä»¶ ----------------------------------------------------------
 
 UCR_bed <- data.frame(str_split_fixed(UCR_rawdata$`location(hg16)`, ":|-", 3))
 write.table(UCR_bed, file = "UCR.bed", col.names = F, row.names = F, quote = F, sep = "\t")
 
-# ÔÚNCBI remapÍøÕ¾´Óhg16(NCBI34)×ª»»³ÉGRCh38.p14(hg38)
+# åœ¨NCBI remapç½‘ç«™ä»hg16(NCBI34)è½¬æ¢æˆGRCh38.p14(hg38)
 UCR_remapped_GRCh38 <- read.table(file = "remapped_UCR.bed")
 
-# µ¼ÈëÑ©º®Ê¦½ãµÄucr(GRCh38)ÁĞ±í
-UCR_bed_xh <- read.table(file = "D:/1-UCRÏîÄ¿/UCR.bed.txt")
+# å¯¼å…¥é›ªå¯’å¸ˆå§çš„ucr(GRCh38)åˆ—è¡¨
+UCR_bed_xh <- read.table(file = "D:/1-UCRé¡¹ç›®/UCR.bed.txt")
 
-# ±È½ÏÖ®ºó·¢ÏÖ³ıÁËÔÚUCR_remapped_GRCh38µÄÊı¾İ×îºó¶à³öÀ´Ê®¸ö£¬ÆäËûµÄÎ»ÖÃĞÅÏ¢¶¼ÊÇÍêÈ«Ò»ÖÂµÄ
-# ´ÓÕâÀï¿ªÊ¼Ê¹ÓÃÑ©º®Ê¦½ãÕûÀíºÃµÄUCR_bed_xhÎÄ¼ş½øĞĞºóĞø´¦Àí
+# æ¯”è¾ƒä¹‹åå‘ç°é™¤äº†åœ¨UCR_remapped_GRCh38çš„æ•°æ®æœ€åå¤šå‡ºæ¥åä¸ªï¼Œå…¶ä»–çš„ä½ç½®ä¿¡æ¯éƒ½æ˜¯å®Œå…¨ä¸€è‡´çš„
+# ä»è¿™é‡Œå¼€å§‹ä½¿ç”¨é›ªå¯’å¸ˆå§æ•´ç†å¥½çš„UCR_bed_xhæ–‡ä»¶è¿›è¡Œåç»­å¤„ç†
 UCR_remapped_GRCh38 <- UCR_bed_xh
 
-# ½«ucÃû³Æ·ÅÔÚ×îºóÒ»ÁĞ£¬½«È¾É«Ìå±àºÅÌæ»»³ÉNCµÄ±àºÅ
+# å°†ucåç§°æ”¾åœ¨æœ€åä¸€åˆ—ï¼Œå°†æŸ“è‰²ä½“ç¼–å·æ›¿æ¢æˆNCçš„ç¼–å·
 UCR_remapped_GRCh38 <- select(UCR_remapped_GRCh38, V1, V3, V4, everything())
 
 mapping <- read.table(file = "mapping.txt", sep = "\t")
@@ -64,7 +64,7 @@ write.table(bed_for_getfasta, file = "02-analysis/01-UCR_Conservativity_Validati
             row.names = F, col.names = F, quote = F, sep = "\t")
 
 
-# 20230926 blatÖ®ºóµÄ½á¹ûÎÄ¼ş²é¿´ --------------------------------------------------
+# 20230926 blatä¹‹åçš„ç»“æœæ–‡ä»¶æŸ¥çœ‹ --------------------------------------------------
 
 setwd("D:/R_project/UCR_project/02-analysis/01-UCR_Conservativity_Validation/blat results/")
 options(stringsAsFactors = F)
@@ -72,13 +72,13 @@ options(stringsAsFactors = F)
 library(tidyverse)
 library(stringr)
 
-## Ğ¡Êómouse
-# ¶ÁÈëblat½á¹ûÎÄ¼ş
+## å°é¼ mouse
+# è¯»å…¥blatç»“æœæ–‡ä»¶
 blat_GRCm39.out <- read.table(
   file = "02-analysis/01-UCR_Conservativity_Validation/blat results/blat_GRCm39.out", 
   skip = 5, sep = "\t")
 
-# ÕûÀíheaders
+# æ•´ç†headers
 header_f <- read_lines(
   file = "02-analysis/01-UCR_Conservativity_Validation/blat results/blat_GRCm39.out", 
   skip = 2, n_max = 1)
@@ -103,13 +103,13 @@ colnames(blat_GRCm39.out) <- header_f
 GRCm39_complete_match <- blat_GRCm39.out
 GRCm39_complete_match <- filter(GRCm39_complete_match, GRCm39_complete_match$'mis-match' == 0)
 
-# É¾³ıuc.188ºÍuc.263£¬ËûÃÇµÄmatch·Ö±ğÊÇ30ºÍ44
+# åˆ é™¤uc.188å’Œuc.263ï¼Œä»–ä»¬çš„matchåˆ†åˆ«æ˜¯30å’Œ44
 GRCm39_part_match <- filter(GRCm39_complete_match, GRCm39_complete_match$'match' < 200)
 
-# 481¸öucrÔÚĞ¡Êó»ùÒò×éÉÏÈ«²¿¶¼ÊÇ100%±£ÊØ
+# 481ä¸ªucråœ¨å°é¼ åŸºå› ç»„ä¸Šå…¨éƒ¨éƒ½æ˜¯100%ä¿å®ˆ
 GRCm39_complete_match <- filter(GRCm39_complete_match, GRCm39_complete_match$'match' >= 200)
 
-## ´óÊórat
+## å¤§é¼ rat
 blat_mRatBN7.2.out <- read.table(file = "blat_mRatBN7.2.out", sep = "\t", skip = 5)
 header_rat <- read_lines(file = "blat_mRatBN7.2.out", skip = 2, n_max = 1)
 header_rat <- str_split_fixed(header_rat, "\t", 21)
@@ -132,7 +132,7 @@ colnames(blat_mRatBN7.2.out) <- header_rat
 mRatBN7.2_complete_match <- blat_mRatBN7.2.out
 mRatBN7.2_part_match <- filter(mRatBN7.2_complete_match, mRatBN7.2_complete_match$'match' < 200 | mRatBN7.2_complete_match$'mis-match' > 0)
 mRatBN7.2_complete_match <- filter(mRatBN7.2_complete_match, mRatBN7.2_complete_match$'mis-match' == 0 & mRatBN7.2_complete_match$'match' >= 200)
-# ºÍ´óÊó»ùÒò×éÏà±È²»ÍêÈ«±£ÊØµÄucÓĞÁ½¸ö£¬uc.18(231/238)ºÍuc.304(270/272)
+# å’Œå¤§é¼ åŸºå› ç»„ç›¸æ¯”ä¸å®Œå…¨ä¿å®ˆçš„ucæœ‰ä¸¤ä¸ªï¼Œuc.18(231/238)å’Œuc.304(270/272)
 
 
 
